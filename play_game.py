@@ -21,3 +21,7 @@ def main():
             print('Good bye')
             return
 
+
+# Program execution begins here
+if __name__ == '__main__':
+    main()
