@@ -62,3 +62,44 @@ def check_for_win(board, mark):
         return True
     return False
 
+
+def check_for_draw(board):
+    # develop cope to check if all cells are occupied
+    # return True if it is, False otherwise
+    for row in board:
+        if ' ' in row:
+            return False  # If there's an empty space, game is not a draw
+    return not (check_for_win(board, 'X') or check_for_win(board, 'O'))  # If there's no empty space and no winner, it's a draw
+
+        
+def play_game(board):
+    #Initializes the board
+    board = initialise_board(board)
+    while True:
+        # Player's turn
+        row, col = get_player_move(board)
+        board[row][col] = 'X'
+        draw_board(board)
+
+        if check_for_win(board, 'X'):
+            print("Congratulations! You win!")
+            board = initialise_board(board)
+            draw_board(board)
+            return True  
+
+        if check_for_draw(board):
+            print("The game is a draw.")
+            return False
+
+        #Computer's turn
+        row, col = choose_computer_move(board)
+        while board[row][col] == 'X':  # Ensure computer does not overwrite player's move
+            row, col = choose_computer_move(board)
+        board[row][col] = 'O'
+        draw_board(board) #Updated board
+
+        if check_for_win(board, 'O'):
+            print("Computer wins! Better luck next time.")
+            return False
+
+ 
