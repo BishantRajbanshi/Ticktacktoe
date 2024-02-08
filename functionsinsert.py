@@ -102,4 +102,54 @@ def play_game(board):
             print("Computer wins! Better luck next time.")
             return False
 
- 
+     
+def menu():
+    # get user input of either '1', '2', '3' or 'q'
+    # 1 - Play the game
+    # 2 - Save score in file 'leaderboard.txt'
+    # 3 - Load and display the scores from the 'leaderboard.txt'
+    # q - End the program
+
+    print("1 - Play the game")
+    print("2 - Save score in file 'leaderboard.txt'")
+    print("3 - Load and display the scores from 'leaderboard.txt'")
+    print("q - End the program")
+    choice = input("Enter your choice: ")
+    return choice
+
+def load_scores():
+    """
+    Loads the leaderboard scores from the file.
+    """
+    if os.path.exists('leaderboard.txt'):
+        with open('leaderboard.txt', 'r') as file:
+            try:
+                return json.load(file)
+            except json.JSONDecodeError:
+                print("Error: Unable to decode JSON from the file.")
+                return {}
+    else:
+        print("Leaderboard file does not exist.")
+        return {}
+
+    
+def save_score(score):
+    """
+    Saves the player's score to the leaderboard file.
+    """
+    name = input("Enter your name: ")
+    scores = load_scores()
+    scores[name] = score
+    with open('leaderboard.txt', 'w') as file:
+        json.dump(scores, file)
+        print("Score saved successfully.")
+
+
+def display_leaderboard(leaders):
+    """
+    Displays the leaderboard.
+    """
+    print("\nLEADERBOARD:")
+    print("Name\tScore")
+    for name, score in leaders.items():
+        print(f"{name}\t{score}")
